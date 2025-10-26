@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Web Calculator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .container {
+      background: white;
+      width: 400px;
+      margin: auto;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    select, input, button {
+      margin: 8px;
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #222;
+      font-size: 1.1rem;
+    }
+
+    hr {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enhanced Calculator</h2>
+
+    <!-- Arithmetic Section -->
+    <h3>Basic Arithmetic</h3>
+    <input type="number" id="num1" placeholder="Enter first number">
+    <input type="number" id="num2" placeholder="Enter second number">
+    <select id="operation">
+      <option value="add">Addition (+)</option>
+      <option value="subtract">Subtraction (-)</option>
+      <option value="multiply">Multiplication (×)</option>
+      <option value="divide">Division (÷)</option>
+    </select>
+    <button onclick="calculateArithmetic()">Calculate</button>
+
+    <div class="result" id="arithResult"></div>
+
+    <hr>
+
+    <!-- Scientific Section -->
+    <h3>Scientific Calculations</h3>
+    <input type="number" id="sciNum1" placeholder="Enter number">
+    <input type="number" id="sciNum2" placeholder="Enter exponent (for power)">
+    <select id="sciOperation">
+      <option value="sqrt">Square Root (√)</option>
+      <option value="power">Exponentiation (xʸ)</option>
+    </select>
+    <button onclick="calculateScientific()">Calculate</button>
+
+    <div class="result" id="sciResult"></div>
+
+    <hr>
+
+    <!-- Unit Conversion Section -->
+    <h3>Unit Conversion</h3>
+    <input type="number" id="convertValue" placeholder="Enter value">
+    <select id="convertType">
+      <option value="cToF">Celsius → Fahrenheit</option>
+      <option value="fToC">Fahrenheit → Celsius</option>
+      <option value="inrToUsd">INR → USD</option>
+      <option value="usdToInr">USD → INR</option>
+    </select>
+    <button onclick="convertUnits()">Convert</button>
+
+    <div class="result" id="convResult"></div>
+  </div>
+
+  <script>
+    // ---------- BASIC ARITHMETIC ----------
+    function calculateArithmetic() {
+      const num1 = parseFloat(document.getElementById('num1').value);
+      const num2 = parseFloat(document.getElementById('num2').value);
+      const op = document.getElementById('operation').value;
+      let result;
+
+      if (isNaN(num1) || isNaN(num2)) {
+        document.getElementById('arithResult').innerText = "Please enter valid numbers.";
+        return;
+      }
+
+      switch(op) {
+        case "add": result = num1 + num2; break;
+        case "subtract": result = num1 - num2; break;
+        case "multiply": result = num1 * num2; break;
+        case "divide":
+          if (num2 === 0) {
+            document.getElementById('arithResult').innerText = "Error: Division by zero!";
+            return;
+          }
+          result = num1 / num2;
+          break;
+      }
+
+      document.getElementById('arithResult').innerText = "Result: " + result;
+    }
+
+    // ---------- SCIENTIFIC ----------
+    function calculateScientific() {
+      const num1 = parseFloat(document.getElementById('sciNum1').value);
+      const num2 = parseFloat(document.getElementById('sciNum2').value);
+      const op = document.getElementById('sciOperation').value;
+      let result;
+
+      switch(op) {
+        case "sqrt":
+          if (num1 < 0) {
+            result = "Error: Negative number!";
+          } else {
+            result = Math.sqrt(num1);
+          }
+          break;
+        case "power":
+          result = Math.pow(num1, num2);
+          break;
+      }
+
+      document.getElementById('sciResult').innerText = "Result: " + result;
+    }
+
+    // ---------- UNIT CONVERSION ----------
+    function convertUnits() {
+      const value = parseFloat(document.getElementById('convertValue').value);
+      const type = document.getElementById('convertType').value;
+      let result;
+
+      if (isNaN(value)) {
+        document.getElementById('convResult').innerText = "Please enter a valid number.";
+        return;
+      }
+
+      switch(type) {
+        case "cToF": result = (value * 9/5) + 32 + " °F"; break;
+        case "fToC": result = (value - 32) * 5/9 + " °C"; break;
+        case "inrToUsd": result = "$" + (value * 0.012).toFixed(2); break;
+        case "usdToInr": result = "₹" + (value * 83).toFixed(2); break;
+      }
+
+      document.getElementById('convResult').innerText = "Converted Value: " + result;
+    }
+  </script>
+</body>
+</html>
